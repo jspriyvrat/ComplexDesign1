@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.ListPopupWindow.WRAP_CONTENT
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,21 @@ class MainActivity : AppCompatActivity()
     drawerCode()
         introsliderViewPager2.adapter=introSliderAdapter
         setUpIndicators()
+        setCurrentIndicator(0)
+
+        introsliderViewPager2.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                setCurrentIndicator(position)
+            }
+        }
+        )
+
+
+
+
+
     imageid= arrayOf(R.drawable.img1,R.drawable.img1,R.drawable.img1,R.drawable.img1,R.drawable.img1)
     title= arrayOf("first image ","second image ","third image ","fourth image ","fifth image ")
 
@@ -104,7 +120,8 @@ class MainActivity : AppCompatActivity()
         inicatorsContainer=findViewById(R.id.inicatorscon)
 
     }
-    private fun drawerCode() {
+    private fun drawerCode()
+    {
 
         drawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,R.string.open, R.string.close)
         drawerToggle.isDrawerIndicatorEnabled = false
@@ -148,7 +165,7 @@ class MainActivity : AppCompatActivity()
             indicators[i].apply {
                 this?.setImageDrawable(
                 ContextCompat.getDrawable(applicationContext,
-                    R.drawable.indicator_inactive
+                    R.drawable.indicator_active
                 ))
                 this?.layoutParams=layoutparamss
             }
@@ -156,6 +173,31 @@ class MainActivity : AppCompatActivity()
         }
 
     }
-
+ private  fun  setCurrentIndicator(index:Int)
+ {
+     val childcount=inicatorsContainer.childCount
+     for(i in 0 until  childcount)
+     {
+         val imageview=inicatorsContainer[i] as ImageView
+         if(i==index)
+         {
+             imageview.setImageDrawable(
+                 ContextCompat.getDrawable(
+                     applicationContext,
+                     R.drawable.indicator_inactive
+                 )
+             )
+         }
+         else
+         {
+             imageview.setImageDrawable(
+                 ContextCompat.getDrawable(
+                     applicationContext,
+                     R.drawable.indicator_active
+                 )
+             )
+         }
+     }
+ }
 
 }
